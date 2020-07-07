@@ -3,6 +3,8 @@ from info.models import *
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin 
+#importing loginrequiredMixin and UserPassesTestMixin from auth.mixin
 #from django.views.generic import  DetailView  # importing class based views from views.generic
 from django.views.generic import ListView, DetailView, CreateView,UpdateView,DeleteView # importing class based views from views.generic
 from django.core.paginator import Paginator
@@ -15,7 +17,7 @@ def home(request):
     return render(request, 'info/index.html')
 
 
-class NoticeListView(ListView):
+class NoticeListView(LoginRequiredMixin,ListView):
     model = Notice
     template_name = 'info/notice_list.html' #<app>/<model>_<viewtype>.html
     context_objects_name = 'notice'
@@ -23,7 +25,7 @@ class NoticeListView(ListView):
     paginate_by = 5 # pagination  (django provided )
 
 
-class NoticeDetailView(DetailView):
+class NoticeDetailView(LoginRequiredMixin,DetailView):
     model = Notice
     template_name = 'info/notice_detail.html' #<app>/<model>_<viewtype>.html
 
@@ -71,7 +73,7 @@ def noticesearch(request):
 	return render(request, template, {"notresult": notresult })
 
 
-class AssignmentListView(ListView):
+class AssignmentListView(LoginRequiredMixin,ListView):
     model = Assignment
     template_name = 'info/assignment_list.html' #<app>/<model>_<viewtype>.html
     context_objects_name = 'assignment'
@@ -79,7 +81,7 @@ class AssignmentListView(ListView):
     paginate_by = 3 # pagination  (django provided )
 
 
-class AssignmentDetailView(DetailView):
+class AssignmentDetailView(LoginRequiredMixin,DetailView):
     model = Assignment
     template_name = 'info/assignment_detail.html' #<app>/<model>_<viewtype>.html
 
